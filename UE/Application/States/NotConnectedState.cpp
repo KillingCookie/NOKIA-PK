@@ -1,4 +1,5 @@
 #include "NotConnectedState.hpp"
+#include "ConnectingState.hpp"
 
 namespace ue
 {
@@ -12,6 +13,7 @@ NotConnectedState::NotConnectedState(Context &context)
 void NotConnectedState::handleSib(common::BtsId btsId)
 {
     context.bts.sendAttachRequest(btsId);
+    context.setState<ConnectingState>();
 }
 
 }

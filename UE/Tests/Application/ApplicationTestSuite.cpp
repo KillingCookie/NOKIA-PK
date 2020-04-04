@@ -24,6 +24,7 @@ protected:
     StrictMock<ITimerPortMock> timerPortMock;
 
     Expectation notConnectedExpectation = EXPECT_CALL(userPortMock, showNotConnected());
+    Expectation connectingExpectation = EXPECT_CALL(userPortMock, showConnecting());
 
     Application objectUnderTest{PHONE_NUMBER,
                                 loggerMock,
