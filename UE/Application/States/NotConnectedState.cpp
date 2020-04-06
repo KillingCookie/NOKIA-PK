@@ -12,8 +12,7 @@ NotConnectedState::NotConnectedState(Context &context)
 
 void NotConnectedState::handleSib(common::BtsId btsId)
 {
-    context.bts.sendAttachRequest(btsId);
-    context.setState<ConnectingState>();
+    context.setState<ConnectingState>(btsId);
 }
 
 }
