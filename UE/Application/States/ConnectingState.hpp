@@ -12,6 +12,7 @@ public:
     void handleTimeout();
     void handleAttachAccept();
     void handleAttachReject();
+    void handleDisconnected();
 };
 
 }

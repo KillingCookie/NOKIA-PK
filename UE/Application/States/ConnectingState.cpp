@@ -34,4 +34,10 @@ void ConnectingState::handleAttachReject(){
     context.setState<NotConnectedState>();
 }
 
+void ConnectingState::handleDisconnected()
+{
+    logger.logInfo("Disconnected from BTS");
+    context.setState<NotConnectedState>();
+}
+
 }

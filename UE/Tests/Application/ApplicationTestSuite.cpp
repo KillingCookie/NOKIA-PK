@@ -80,6 +80,11 @@ TEST_F(ApplicationConnectingTestSuite, shallStopTimerOnAttachReject)
     objectUnderTest.handleAttachReject();
 }
 
+TEST_F(ApplicationConnectingTestSuite, shallShowNotConnectedOnDisconect){
+    EXPECT_CALL(userPortMock, showNotConnected());
+    objectUnderTest.handleDisconnected();
+}
+
 struct ApplicationConnectedTestSuite : ApplicationTestSuite
 {};
 
@@ -87,5 +92,10 @@ TEST_F(ApplicationConnectingTestSuite, shallShowConnected)
 {
     EXPECT_CALL(userPortMock, showConnected());
     objectUnderTest.handleSib(BTS_ID);
+}
+
+TEST_F(ApplicationConnectedTestSuite, shallShowNotConnectedOnDisconect){
+    EXPECT_CALL(userPortMock, showNotConnected());
+    objectUnderTest.handleDisconnected();
 }
 }
