@@ -18,6 +18,7 @@ class ApplicationTestSuite : public Test
 protected:
     const common::PhoneNumber PHONE_NUMBER{112};
     const common::BtsId BTS_ID{203};
+    const std::string TEXT{"Test"};
     NiceMock<common::ILoggerMock> loggerMock;
     StrictMock<IBtsPortMock> btsPortMock;
     StrictMock<IUserPortMock> userPortMock;
@@ -97,5 +98,10 @@ TEST_F(ApplicationConnectingTestSuite, shallShowConnected)
 TEST_F(ApplicationConnectedTestSuite, shallShowNotConnectedOnDisconect){
     EXPECT_CALL(userPortMock, showNotConnected());
     objectUnderTest.handleDisconnected();
+}
+
+TEST_F(ApplicationConnectedTestSuite, shallShowNewSmsOnSmsReceived){
+    EXPECT_CALL(userPortMock, showNewSms());
+    objectUnderTest.handleSms(PHONE_NUMBER, TEXT);
 }
 }

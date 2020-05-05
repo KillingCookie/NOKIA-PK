@@ -31,6 +31,11 @@ void UserPort::showConnecting()
     gui.showConnecting();
 }
 
+void UserPort::showNewSms()
+{
+    gui.showNewSms();
+}
+
 void UserPort::showConnected()
 {
     IUeGui::IListViewMode& menu = gui.setListViewMode();
