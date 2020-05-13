@@ -16,9 +16,9 @@ void ConnectedState::handleDisconnected()
     context.setState<NotConnectedState>();
 }
 
-void ConnectedState::handleSms(common::PhoneNumber from, std::string text)
+void ConnectedState::handleSms(common::PhoneNumber from, common::PhoneNumber to, std::string text)
 {
-    logger.logInfo("Received SMS from ", from, ": «", text, "»");
+    context.smsdb.addSms(from, to, text);
     context.user.showNewSms();
 }
 
