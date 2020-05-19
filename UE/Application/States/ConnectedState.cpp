@@ -22,4 +22,9 @@ void ConnectedState::handleSms(common::PhoneNumber from, common::PhoneNumber to,
     context.user.showNewSms();
 }
 
+void ConnectedState::handleCallRequest(common::PhoneNumber from)
+{
+    logger.logInfo("Received call request from ", from);
+}
+
 }

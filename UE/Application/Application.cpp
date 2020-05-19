@@ -52,4 +52,9 @@ void Application::handleSms(common::PhoneNumber from, common::PhoneNumber to, st
     context.state->handleSms(from, to, text);
 }
 
+void Application::handleCallRequest(common::PhoneNumber from)
+{
+    context.state->handleCallRequest(from);
+}
+
 }

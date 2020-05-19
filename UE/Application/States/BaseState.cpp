@@ -45,4 +45,9 @@ void BaseState::handleSms(common::PhoneNumber from, common::PhoneNumber to, std:
     logger.logDebug("Uexpected: handleSms");
 }
 
+void BaseState::handleCallRequest(common::PhoneNumber from)
+{
+    logger.logDebug("Uexpected: handleCallRequest");
+}
+
 }
