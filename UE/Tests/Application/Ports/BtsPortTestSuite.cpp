@@ -113,4 +113,13 @@ TEST_F(BtsPortTestSuite, shallHandleSms)
     messageCallback(msg.getMessage());
 }
 
+TEST_F(BtsPortTestSuite, shallHandleCallRequest)
+{
+    EXPECT_CALL(handlerMock, handleCallRequest);
+    common::OutgoingMessage msg{common::MessageId::CallRequest,
+                                common::PhoneNumber{},
+                                PHONE_NUMBER};
+    messageCallback(msg.getMessage());
+}
+
 }
