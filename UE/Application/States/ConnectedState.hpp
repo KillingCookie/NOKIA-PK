@@ -12,6 +12,7 @@ public:
     void handleDisconnected();
     void handleSms(common::PhoneNumber from, common::PhoneNumber to, std::string text);
     void handleCallRequest(common::PhoneNumber from);
+    void handleDial(common::PhoneNumber to);
 };
 
 }

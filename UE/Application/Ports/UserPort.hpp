@@ -19,6 +19,7 @@ public:
     void showConnecting() override;
     void showConnected() override;
     void showNewSms() override;
+    void setDialMode() override;
 
 private:
     common::PrefixedLogger logger;

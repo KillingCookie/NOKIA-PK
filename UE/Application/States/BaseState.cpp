@@ -50,4 +50,9 @@ void BaseState::handleCallRequest(common::PhoneNumber from)
     logger.logDebug("Uexpected: handleCallRequest");
 }
 
+void BaseState::handleDial(common::PhoneNumber to)
+{
+    logger.logDebug("Uexpected: handleDial");
+}
+
 }

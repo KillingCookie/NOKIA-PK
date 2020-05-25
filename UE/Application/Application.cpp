@@ -57,4 +57,9 @@ void Application::handleCallRequest(common::PhoneNumber from)
     context.state->handleCallRequest(from);
 }
 
+void Application::handleDial(common::PhoneNumber to)
+{
+    context.state->handleDial(to);
+}
+
 }

@@ -27,4 +27,9 @@ void ConnectedState::handleCallRequest(common::PhoneNumber from)
     logger.logInfo("Received call request from ", from);
 }
 
+void ConnectedState::handleDial(common::PhoneNumber to)
+{
+    logger.logInfo("Calling ", to);
+}
+
 }

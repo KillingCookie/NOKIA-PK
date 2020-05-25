@@ -1,5 +1,5 @@
 #pragma once
-
+#include "Messages/PhoneNumber.hpp"
 
 namespace ue
 {
@@ -8,6 +8,7 @@ class IUserEventsHandler
 {
 public:
     virtual ~IUserEventsHandler() = default;
+    virtual void handleDial(common::PhoneNumber to) = 0;
 };
 
 class IUserPort
@@ -19,6 +20,7 @@ public:
     virtual void showConnecting() = 0;
     virtual void showConnected() = 0;
     virtual void showNewSms() = 0;
+    virtual void setDialMode() = 0;
 };
 
 }
