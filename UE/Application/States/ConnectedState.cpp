@@ -29,7 +29,11 @@ void ConnectedState::handleCallRequest(common::PhoneNumber from)
 
 void ConnectedState::handleDial(common::PhoneNumber to)
 {
+    using namespace std::literals;
+
     logger.logInfo("Calling ", to);
+    context.timer.startTimer(60000ms);
+    context.bts.sendCallRequest(to);
 }
 
 }

@@ -112,4 +112,16 @@ TEST_F(ApplicationConnectedTestSuite, shallSaveNewSmsToDbOnSmsReceived){
     EXPECT_CALL(smsDbPortMock, addSms(PHONE_NUMBER, PHONE_NUMBER, TEXT));
     objectUnderTest.handleSms(PHONE_NUMBER, PHONE_NUMBER, TEXT);
 }
+
+TEST_F(ApplicationConnectedTestSuite, shallStartTimerOnDial){
+    using namespace std::literals;
+
+    EXPECT_CALL(timerPortMock, startTimer(60000ms));
+    objectUnderTest.handleDial(PHONE_NUMBER);
+}
+
+TEST_F(ApplicationConnectedTestSuite, shallSendCallRequestOnDial){
+    EXPECT_CALL(btsPortMock, sendCallRequest(PHONE_NUMBER));
+    objectUnderTest.handleDial(PHONE_NUMBER);
+}
 }
