@@ -82,8 +82,15 @@ void BtsPort::sendAttachRequest(common::BtsId btsId)
                                 common::PhoneNumber{}};
     msg.writeBtsId(btsId);
     transport.sendMessage(msg.getMessage());
+}
 
-
+void BtsPort::sendCallRequest(common::PhoneNumber to)
+{
+    logger.logDebug("sendCallRequest:", to);
+    common::OutgoingMessage msg{common::MessageId::CallRequest, 
+                                phoneNumber, 
+                                to};
+    transport.sendMessage(msg.getMessage());
 }
 
 void BtsPort::handleDisconnected()
