@@ -3,10 +3,10 @@
 ## Nie pushujemy/zmieniamy mastera w tym repozytorium
 
 ## Pytania techniczne
-Używamy **/issues**
+Uzywamy **/issues**
 
 ## Rejestrowanie pracy
-Po ustaleniu przypisań do grup w **/issues** robimy ticket z informacjami:  
+Po ustaleniu przypisan do grup w **/issues** robimy ticket z informacjami:  
 - nazwa grupy,  
 - osoby w grupie,  
 - link do boarda,  

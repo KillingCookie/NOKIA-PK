@@ -10,9 +10,7 @@ NotConnectedState::NotConnectedState(Context &context)
     context.user.showNotConnected();
 }
 
-void NotConnectedState::handleSib(common::BtsId btsId)
-{
+void NotConnectedState::handleSib(common::BtsId btsId){
     context.setState<ConnectingState>(btsId);
 }
-
 }

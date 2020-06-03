@@ -23,7 +23,6 @@ protected:
     StrictMock<common::ITransportMock> transportMock;
     common::ITransport::MessageCallback messageCallback;
     common::ITransport::DisconnectedCallback disconnectedCallback;
-
     BtsPort objectUnderTest{loggerMock, transportMock, PHONE_NUMBER};
 
     BtsPortTestSuite()
@@ -83,7 +82,20 @@ TEST_F(BtsPortTestSuite, shallHandleAttachReject)
     msg.writeNumber(false);
     messageCallback(msg.getMessage());
 }
-
+TEST_F(BtsPortTestSuite, shallSendSms)
+{
+    common::BinaryMessage msg;
+    EXPECT_CALL(transportMock, sendMessage(_)).WillOnce([&msg](auto param) { msg = std::move(param); return true; });
+    auto recipent = common::PhoneNumber{123};
+    auto message = "buu";
+    objectUnderTest.sendSms(recipent, message);
+    common::IncomingMessage reader(msg);
+    ASSERT_NO_THROW(EXPECT_EQ(common::MessageId::Sms, reader.readMessageId()));
+    ASSERT_NO_THROW(EXPECT_EQ(PHONE_NUMBER, reader.readPhoneNumber()));
+    ASSERT_NO_THROW(EXPECT_EQ(recipent, reader.readPhoneNumber()));
+    ASSERT_NO_THROW(EXPECT_EQ(message, reader.readRemainingText()));
+    ASSERT_NO_THROW(reader.checkEndOfMessage());
+}
 TEST_F(BtsPortTestSuite, shallSendAttachRequest)
 {
     common::BinaryMessage msg;
@@ -97,10 +109,19 @@ TEST_F(BtsPortTestSuite, shallSendAttachRequest)
     ASSERT_NO_THROW(reader.checkEndOfMessage());
 }
 
-TEST_F(BtsPortTestSuite, shallHandleDiscconnected)
+TEST_F(BtsPortTestSuite, shallHandleDisconnected)
 {
     EXPECT_CALL(handlerMock, handleDisconnected());
     disconnectedCallback();
+}
+
+TEST_F(BtsPortTestSuite, shallHandleReceivedSms)
+{
+    EXPECT_CALL(handlerMock, handleSmsReceived);
+    common::OutgoingMessage message{common::MessageId::Sms,
+                                common::PhoneNumber{},
+                                PHONE_NUMBER};
+    messageCallback(message.getMessage());
 }
 
 }

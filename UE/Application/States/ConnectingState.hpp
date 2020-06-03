@@ -8,10 +8,10 @@ namespace ue
 class ConnectingState : public BaseState
 {
 public:
-    ConnectingState(Context &context, common::BtsId btsId);
-    void handleTimeout();
-    void handleAttachAccept();
-    void handleAttachReject();
+    ConnectingState(Context& context, common::BtsId btsId);
+    void handleAttachReject() override;
+    void handleTimeout() override;
+    void handleAttachAccept() override;
     void handleDisconnected();
 };
 
