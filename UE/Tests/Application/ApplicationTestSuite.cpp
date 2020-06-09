@@ -6,7 +6,7 @@
 #include "Mocks/IBtsPortMock.hpp"
 #include "Mocks/IUserPortMock.hpp"
 #include "Mocks/ITimerPortMock.hpp"
-#include "Mocks/ISmsDbPortMock.hpp"
+#include "Mocks/ISmsDatabaseMock.hpp"
 #include "Messages/PhoneNumber.hpp"
 #include <memory>
 
@@ -19,24 +19,29 @@ class ApplicationTestSuite : public Test
 protected:
     const common::PhoneNumber PHONE_NUMBER{112};
     const common::BtsId BTS_ID{203};
-    const std::string TEXT{"Test"};
     NiceMock<common::ILoggerMock> loggerMock;
     StrictMock<IBtsPortMock> btsPortMock;
     StrictMock<IUserPortMock> userPortMock;
     StrictMock<ITimerPortMock> timerPortMock;
-    StrictMock<ISmsDbPortMock> smsDbPortMock;
+
+
+    Expectation notConnectedExpectation = EXPECT_CALL(userPortMock, showNotConnected());
+
+
+    StrictMock<ISmsDatabaseMock> dbMock;
 
     Application objectUnderTest{PHONE_NUMBER,
                                 loggerMock,
                                 btsPortMock,
                                 userPortMock,
                                 timerPortMock,
-                                smsDbPortMock};
+                               dbMock,
+                               dbMock
+                               };
 };
 
 struct ApplicationNotConnectedTestSuite : ApplicationTestSuite
 {};
-
 TEST_F(ApplicationNotConnectedTestSuite, shallShowNotConnected)
 {
     EXPECT_CALL(userPortMock, showNotConnected());
@@ -101,15 +106,5 @@ TEST_F(ApplicationConnectingTestSuite, shallShowConnected)
 TEST_F(ApplicationConnectedTestSuite, shallShowNotConnectedOnDisconect){
     EXPECT_CALL(userPortMock, showNotConnected());
     objectUnderTest.handleDisconnected();
-}
-
-TEST_F(ApplicationConnectedTestSuite, shallShowNewSmsOnSmsReceived){
-    EXPECT_CALL(userPortMock, showNewSms());
-    objectUnderTest.handleSms(PHONE_NUMBER, PHONE_NUMBER, TEXT);
-}
-
-TEST_F(ApplicationConnectedTestSuite, shallSaveNewSmsToDbOnSmsReceived){
-    EXPECT_CALL(smsDbPortMock, addSms(PHONE_NUMBER, PHONE_NUMBER, TEXT));
-    objectUnderTest.handleSms(PHONE_NUMBER, PHONE_NUMBER, TEXT);
 }
 }

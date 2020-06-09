@@ -1,43 +1,39 @@
-#include "NotConnectedState.hpp"
 #include "ConnectingState.hpp"
+#include "NotConnectedState.hpp"
 #include "ConnectedState.hpp"
-
 namespace ue
 {
 
 ConnectingState::ConnectingState(Context &context, common::BtsId btsId)
     : BaseState(context, "ConnectingState")
 {
-    using namespace std::literals;
-
+	using namespace std::literals;
     context.user.showConnecting();
     context.bts.sendAttachRequest(btsId);
     context.timer.startTimer(500ms);
 }
 
-void ConnectingState::handleTimeout()
-{
-    context.logger.logError("BTS connection timed out");
-    context.setState<NotConnectedState>();
-}
-
-void ConnectingState::handleAttachAccept()
-{
-    context.logger.logInfo("BTS attach succeeded");
-    context.timer.stopTimer();
-    context.setState<ConnectedState>();
-}
-
 void ConnectingState::handleAttachReject(){
-    context.logger.logError("BTS attach rejected");
+    context.logger.logError("attach Reject");
     context.timer.stopTimer();
     context.setState<NotConnectedState>();
 }
 
 void ConnectingState::handleDisconnected()
 {
-    logger.logInfo("Disconnected from BTS");
+
     context.setState<NotConnectedState>();
 }
 
+void ConnectingState::handleTimeout(){
+    context.logger.logError("timeout");
+   // context.timer.stopTimer();
+    context.setState<NotConnectedState>();
+
+}
+void ConnectingState::handleAttachAccept(){
+    context.logger.logInfo("Attach accept");
+    context.timer.stopTimer();
+    context.setState<ConnectedState>();
+}
 }

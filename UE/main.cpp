@@ -3,8 +3,7 @@
 #include "Ports/BtsPort.hpp"
 #include "Ports/UserPort.hpp"
 #include "Ports/TimerPort.hpp"
-#include "Ports/SmsDbPort.hpp"
-
+#include "Ports/SmsDatabasePort.hpp"
 int main(int argc, char* argv[])
 {
     using namespace ue;
@@ -15,20 +14,18 @@ int main(int argc, char* argv[])
     auto& tranport = appEnv->getTransportToBts();
     auto& gui = appEnv->getUeGui();
     auto phoneNumber = appEnv->getMyPhoneNumber();
-
+    SmsDatabase db;
+    SmsDatabase db_w;
     BtsPort bts(logger, tranport, phoneNumber);
-    UserPort user(logger, gui, phoneNumber);
+    UserPort user(logger, gui, phoneNumber, db, db_w);
     TimerPort timer(logger);
-    SmsDbPort smsdb(logger);
-    Application app(phoneNumber, logger, bts, user, timer, smsdb);
+    Application app(phoneNumber, logger, bts, user, timer, db, db_w);
     bts.start(app);
     user.start(app);
     timer.start(app);
-    smsdb.start(app);
     appEnv->startMessageLoop();
     bts.stop();
     user.stop();
     timer.stop();
-    smsdb.stop();
 }
 

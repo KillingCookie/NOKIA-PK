@@ -4,6 +4,15 @@
 
 namespace ue
 {
+void BtsPort::sendSms(common::PhoneNumber from, std::string message)
+{
+    logger.logDebug("sendSms: ", from);
+    common::OutgoingMessage msg{common::MessageId::Sms,
+                                phoneNumber,
+                                from};
+    msg.writeText(message);
+    transport.sendMessage(msg.getMessage());
+}
 
 BtsPort::BtsPort(common::ILogger &logger, common::ITransport &transport, common::PhoneNumber phoneNumber)
     : logger(logger, "[BTS-PORT]"),
@@ -53,14 +62,45 @@ void BtsPort::handleMessage(BinaryMessage msg)
         }
         case common::MessageId::Sms:
         {
-            auto text = reader.readRemainingText();
-            handler->handleSms(from, phoneNumber, text);
+            std::string message = reader.readRemainingText();
+            logger.logDebug("BtsPort, SmsReceived from: ", from);
+            logger.logDebug("BtsPort, SmsReceived message: ", message);
+            handler->handleSmsReceived(from, message);
+            break;
+        }
+        case common::MessageId::UnknownSender:
+        {
+            logger.logDebug("Unknown Sender: ",from);
+            break;
+        }
+        case common::MessageId::CallRequest:
+        {
+            logger.logDebug("Call request: ",from);
+            handler->handleReceivedCallRequest(from);
+            break;
+        }
+        case common::MessageId::CallAccepted:
+        {
+            logger.logDebug("Call accepted from: ",from);
+            handler->handleReceivedCallAccepted(from);
+            break;
+        }
+        case common::MessageId::CallDropped:
+        {
+            logger.logDebug("Call dropped from: ",from);
+            handler->handleReceivedCallDropped(from);
+            break;
+        }
+        case common::MessageId::UnknownRecipient:
+        {
+            logger.logDebug("Unknown Recipient: ",from);
             break;
         }
         default:
-            logger.logError("unknow message: ", msgId, ", from: ", from);
+            logger.logError("unknown message: ", msgId, ", from: ", from);
 
         }
+
     }
     catch (std::exception const& ex)
     {
